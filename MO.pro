@@ -7,4 +7,4 @@ SOURCES += main.cpp
 QMAKE_CXXFLAGS += -std=c++1z
 
 HEADERS += \
-    15puzzle.hpp
+    mo.hpp
