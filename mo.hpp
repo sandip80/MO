@@ -23,21 +23,21 @@ namespace MO
         return copy( p.first, p.second, out );
     }
 
-    template< typename STATE_VAR, size_t NUM_VAR, typename ACTION, typename ACT_FUNC, typename LEARNER >
+    template< typename STATE_VAR, size_t NUM_VAR, typename ACTION, typename ALL_ACTION, typename ACT_FUNC, typename LEARNER >
     struct MO
     {
         typedef array< STATE_VAR, NUM_VAR > STATE;
         typedef vector< ACTION > MACRO;
         mutable map< pair< size_t, STATE_VAR >, MACRO > table;
         STATE goal_state;
-        const vector< ACTION > & all_act;
+        ALL_ACTION all_action;
         ACT_FUNC act_func;
         LEARNER learn;
         template< typename ITER >
         STATE apply_macro( const STATE & st, ITER begin, ITER end ) const { return accumulate( begin, end, st, act_func ); }
 
-        MO( const STATE & goal_state, const vector< ACTION > & all_act, ACT_FUNC act_func, LEARNER learn ) :
-            goal_state( goal_state ), all_act( all_act ), act_func( act_func ), learn( learn ) { }
+        MO( const STATE & goal_state, ALL_ACTION all_action, ACT_FUNC act_func, LEARNER learn ) :
+            goal_state( goal_state ), all_action( all_action ), act_func( act_func ), learn( learn ) { }
 
         template< typename OUT_ITER >
         OUT_ITER solve( STATE st, OUT_ITER out ) const
@@ -68,9 +68,9 @@ namespace MO
         }
     };
 
-    template< typename STATE_VAR, size_t NUM_VAR, typename ACTION, typename ACT_FUNC, typename LEARNER >
-    auto make_MO( const array< STATE_VAR, NUM_VAR > & goal_state, const vector< ACTION > & all_act, ACT_FUNC act_func, LEARNER learn )
-    { return MO< STATE_VAR, NUM_VAR, ACTION, ACT_FUNC, LEARNER > { goal_state, all_act, act_func, learn }; }
+    template< typename ACTION, typename STATE_VAR, size_t NUM_VAR, typename ALL_ACTION, typename ACT_FUNC, typename LEARNER >
+    auto make_MO( const array< STATE_VAR, NUM_VAR > & goal_state, ALL_ACTION all_action, ACT_FUNC act_func, LEARNER learn )
+    { return MO< STATE_VAR, NUM_VAR, ACTION, ALL_ACTION, ACT_FUNC, LEARNER > { goal_state, all_action, act_func, learn }; }
 }
 #endif // MO_HPP
 
