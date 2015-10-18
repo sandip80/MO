@@ -6,6 +6,13 @@
 #include <cassert>
 typedef std::array<int, 16> puzzle;
 enum class Action { up, down, left, right };
+
+std::vector< Action > & all_action( )
+{
+    static std::vector< Action > act = { { Action::up, Action::down, Action::left, Action::right } };
+    return act;
+}
+
 puzzle act( const puzzle & state, Action a ) {
     auto i = std::find(state.begin( ), state.end( ), 0) - state.begin( );
     assert( i < 16 );
@@ -27,9 +34,10 @@ puzzle act( const puzzle & state, Action a ) {
         case Action::right : return act( i % 4 < 3, i + 1 );
     }
 }
+constexpr puzzle goal_state = { { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0 } };
 
 puzzle random_puzzle( ) {
-    puzzle state = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0 };
+    puzzle state = goal_state;
     unsigned seed = std::chrono::system_clock::now( ).time_since_epoch( ).count( );
     shuffle( state.begin( ), state.end( ), std::default_random_engine( seed ) );
     return state;
