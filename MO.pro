@@ -7,5 +7,4 @@ SOURCES += main.cpp
 QMAKE_CXXFLAGS += -std=c++1z
 
 HEADERS += \
-    mo.hpp \
-    rubiks_cube.hpp
+    mo.hpp
