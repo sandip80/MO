@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <cassert>
 #include <../Artificial_Intelligence_A_Modern_Approach/search.hpp>
+#include <15puzzle.hpp>
 using namespace common;
 
 template< typename IN_ITERATOR, typename OUT_ITERATOR >
