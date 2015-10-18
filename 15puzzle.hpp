@@ -5,6 +5,8 @@
 #include <chrono>
 #include <cassert>
 typedef std::array<int, 16> puzzle;
+std::random_device rd;
+
 enum class Action { up, down, left, right };
 
 std::vector< Action > & all_action( )
@@ -36,11 +38,23 @@ puzzle act( const puzzle & state, Action a ) {
 }
 constexpr puzzle goal_state = { { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0 } };
 
+Action random_action( ) {
+    switch (std::uniform_int_distribution<int> (1, 4)(rd)) {
+        case 1 : return Action::up;
+        case 2 : return Action::down;
+        case 3 : return Action::left;
+        case 4 : return Action::right;
+    }
+}
+
 puzzle random_puzzle( ) {
     puzzle state = goal_state;
     unsigned seed = std::chrono::system_clock::now( ).time_since_epoch( ).count( );
-    shuffle( state.begin( ), state.end( ), std::default_random_engine( seed ) );
-    return state;
+    std::vector<Action> moves;
+    for (int i = 0; i < 152; i++) {
+        moves.push_back( random_action() );
+    }
+    return std::accumulate(moves.begin(), moves.end(), goal_state, act);
 }
 
 template< typename OS >
