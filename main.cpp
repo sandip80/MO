@@ -1,1 +1,1 @@
-int main( ) { return 0; }
+#include "rubiks_cube.hpp"

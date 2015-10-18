@@ -53,6 +53,19 @@ namespace MO
             }
             return copy( ret.begin( ), ret.end( ), out );
         }
+
+        template< typename OUT_ITER >
+        OUT_ITER solve_step( STATE st, OUT_ITER out ) const
+        {
+            for ( size_t i = 0; i < NUM_VAR; ++i )
+            {
+                auto it = table.find( { i, st[i] } );
+                MACRO mac = it == table.end( ) ? table.insert( { { i, st[i] }, learn( st, i, goal_state[i] ) } ).first->second : it->second;
+                st = apply_macro( st, mac.begin( ), mac.end( ) );
+                if ( ! mac.empty( ) ) { return std::copy( mac.begin( ), mac.end( ), out ); }
+            }
+            throw;
+        }
     };
 
     template< typename STATE_VAR, size_t NUM_VAR, typename ACTION, typename ACT_FUNC, typename LEARNER >
